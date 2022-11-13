@@ -1,0 +1,9 @@
+[requires]
+qt/5.15.7
+
+[options]
+qt:shared=True
+
+[generators]
+CMakeToolchain
+CMakeDeps

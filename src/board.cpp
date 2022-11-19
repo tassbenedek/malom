@@ -2,34 +2,34 @@
 #include <QPainter>
 
 
-Board::Board(QWidget* parent) 
+Board::Board(QWidget* parent)
 	: QWidget(parent)
 {}
 
 void Board::paintEvent(QPaintEvent*) {
 	calculateTableNodePositions();
 	const auto dot_size = calculateDotSize();
-	
+
 	QPainter painter(this);
 	painter.setBrush(Qt::black);
 	painter.setPen(QPen(Qt::black, dot_size / 3 + 1));
-	
+
 	for (const auto& conn : connections)
 		painter.drawLine(nodes[conn.first], nodes[conn.second]);
-	
+
 	painter.setPen(Qt::darkCyan);
-	
+
 	for (const auto& node : nodes)
 		painter.drawEllipse(node, dot_size, dot_size);
 
 }
 
 QSize Board::sizeHint() const {
-    return QSize(500, 500);
+	return QSize(600, 600);
 }
 
 QSize Board::minimumSizeHint() const {
-    return QSize(200, 200);
+	return QSize(300, 300);
 }
 
 void Board::calculateTableNodePositions() {
@@ -38,11 +38,11 @@ void Board::calculateTableNodePositions() {
 
 	const QPoint center {w / 2, h / 2};
 	const int half_dist = std::min(w, h) / 2;
-	
+
 	const int hd_outer  = half_dist *circle_ratio_outer;
 	const int hd_middle = half_dist *circle_ratio_middle;
 	const int hd_inner  = half_dist *circle_ratio_inner;
-	
+
 	nodes = Nodes{
 		// outer circle
 		center + QPoint{-hd_outer, -hd_outer},
@@ -53,7 +53,7 @@ void Board::calculateTableNodePositions() {
 		center + QPoint{ hd_outer,         0},
 		center + QPoint{ hd_outer, -hd_outer},
 		center + QPoint{        0, -hd_outer},
-		
+
 		// middle circle
 		center + QPoint{-hd_middle, -hd_middle},
 		center + QPoint{-hd_middle,          0},
@@ -63,7 +63,7 @@ void Board::calculateTableNodePositions() {
 		center + QPoint{ hd_middle,          0},
 		center + QPoint{ hd_middle, -hd_middle},
 		center + QPoint{         0, -hd_middle},
-		
+
 		// inner circle
 		center + QPoint{-hd_inner, -hd_inner},
 		center + QPoint{-hd_inner,         0},
@@ -84,7 +84,7 @@ const Board::Connections Board::buildConnections() {
 	Connections ret;
 
 	for (int i = 0; i < 24; ++i) ret[i] = {i, i + 1};
-	ret[7] = {7, 0};
+	ret[7]  = {7, 0};
 	ret[15] = {15, 8};
 	ret[23] = {23, 16};
 
@@ -100,5 +100,5 @@ const Board::Connections Board::buildConnections() {
 	return ret;
 }
 
-const Board::Connections Board::connections = 
+const Board::Connections Board::connections =
 	Board::buildConnections();

@@ -33,3 +33,6 @@
 
 # Qt build utilities
 *.user
+
+# build folders
+build*/
